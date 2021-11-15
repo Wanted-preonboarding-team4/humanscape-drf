@@ -3,12 +3,12 @@ from django.db import models
 class Research(models.Model):
     subject_number       = models.CharField(max_length=10)
     subject_name         = models.CharField(max_length=200)
-    test_subject         = models.IntegerField
-    study_period         = models.CharField(max_length=10)
+    test_subject         = models.PositiveIntegerField(default=0, blank=True)
+    study_period         = models.CharField(max_length=10, blank=True, default='')
     department           = models.ForeignKey('Department', on_delete=models.CASCADE)
     research_institution = models.ForeignKey('ResearchInstitution', on_delete=models.CASCADE)
     research_type        = models.ForeignKey('ResearchType', on_delete=models.CASCADE)
-    research_model       = models.ForeignKey('ResearchModel', on_delete=models.CASCADE)
+    research_step       = models.ForeignKey('ResearchStep', on_delete=models.CASCADE)
     research_scope       = models.ForeignKey('ResearchScope', on_delete=models.CASCADE)
 
     class Meta:
@@ -36,11 +36,11 @@ class ResearchType(models.Model):
         db_table = 'research_type'
 
 
-class ResearchModel(models.Model):
+class ResearchStep(models.Model):
     name = models.CharField(max_length=45)
 
     class Meta:
-        db_table = 'research_model'
+        db_table = 'research_step'
 
 
 class ResearchScope(models.Model):
