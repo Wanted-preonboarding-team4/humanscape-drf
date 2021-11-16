@@ -22,12 +22,15 @@ import my_settings
 
 def api_response():
     context     = ssl._create_unverified_context()
-    url         = "https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?serviceKey="
+    url         = "https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?page=1&perPage=0&serviceKey="
     encode      = my_settings.API_KEY
     res         = urllib.request.urlopen(url + encode, context=context)
     json_str    = res.read().decode("utf-8")
     json_object = json.loads(json_str)
-
+    f = open("logs/batch_task_log.txt", "a")
+    data = f"status_code = {res.status}, datetime = {datetime.now()}\n"
+    f.write(data)
+    f.close()
     return json_object['data']
 
 def read_data():
