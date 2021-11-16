@@ -65,3 +65,33 @@ class TrialListTestCase(APITestCase):
         self.assertGreater(datetime.strptime(update_date, '%Y-%m-%d'), datetime.now()-timedelta(days=7))
 
 
+class TrialDetailTestCase(APITestCase):
+    def setUp(self):
+
+        self.test_department = Department.objects.create(name="Hematology")
+        self.test_research_institution = ResearchInstitution.objects.create(name="서울아산병원")
+        self.test_research_type = ResearchType.objects.create(name="관찰연구")
+        self.test_research_step = ResearchStep.objects.create(name="코호트")
+        self.teat_research_scope = ResearchScope.objects.create(name="단일기관")
+        self.test_trial_id = "C131010"
+
+        self.test_trial1 = Trial.objects.create(trial_id=self.test_trial_id, trial_name="test", total_target_number=200,
+                                                study_period="3년",
+                                                department=self.test_department,
+                                                research_institution=self.test_research_institution,
+                                                research_type=self.test_research_type,
+                                                research_step=self.test_research_step
+                                                , research_scope=self.teat_research_scope)
+
+    def test_get_trial_detail_success(self):
+        response = self.client.get(f'/trials/{self.test_trial_id}')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+
+    def test_get_trial_detail_not_found(self):
+        NOT_FOUND_TRIAL_ID = self.test_trial_id + "not_found"
+        EXPECTED_RESPONSE = {'detail': 'C131010not_found 으로 찾을 수 없습니다.'}
+        response = self.client.get(f'/trials/{NOT_FOUND_TRIAL_ID}')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.json(), EXPECTED_RESPONSE)
+
