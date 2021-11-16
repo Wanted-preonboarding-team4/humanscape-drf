@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
+from urllib.request import urlopen
 from .serializers import ResearchSerializer
 from .models import (
     Research,
@@ -10,12 +11,19 @@ from .models import (
     ResearchStep,
     ResearchScope
 )
-from urllib.request import urlopen
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import (
     DjangoJobStore,
     register_events,
     register_job
+)
+from .models import (
+  Research, 
+  Department, 
+  ResearchInstitution, 
+  ResearchType, 
+  ResearchStep, 
+  ResearchScope
 )
 import time
 import urllib
@@ -56,6 +64,7 @@ def read_data():
             research_scope = ResearchScope.objects.filter(name=datum["연구범위"]).first()
             if not research_scope:
                 research_scope = ResearchScope.objects.create(name=datum["연구범위"])
+
             Research.objects.create(subject_number=datum["과제번호"], subject_name=datum["과제명"], department=department,
                                     research_institution=research_institution, research_type=research_type,
                                     research_step=research_step,
@@ -64,7 +73,7 @@ def read_data():
         else:
             break
 
-    return data
+    return True
 
 
 def api_job():
@@ -83,3 +92,6 @@ class ResearchView(APIView):
         for i in data[::-1]:
             print(i)
         return Response(status=200)
+        research_data_list = Research.objects.all()
+        serializer = ResearchSerializer(research_data_list, many=True)
+        return Response(serializer.data, status=200)
