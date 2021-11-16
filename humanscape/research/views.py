@@ -4,7 +4,7 @@ from urllib.request import urlopen
 from .serializers import ResearchSerializer
 from apscheduler.schedulers.background import BackgroundScheduler
 from .models import (
-  Research,
+  Trial,
   Department,
   ResearchInstitution,
   ResearchType,
@@ -32,7 +32,7 @@ def read_data():
     data = api_response()
 
     for datum in data[::-1]:
-        research = Research.objects.filter(subject_number=datum["과제번호"])
+        research = Trial.objects.filter(trial_id=datum["과제번호"])
         if not research:
             if not datum["전체목표연구대상자수"]:
                 datum["전체목표연구대상자수"] = 0
@@ -52,13 +52,13 @@ def read_data():
             if not research_scope:
                 research_scope = ResearchScope.objects.create(name=datum["연구범위"])
 
-            Research.objects.create(subject_number=datum["과제번호"], subject_name=datum["과제명"], department=department,
+            Trial.objects.create(trial_id=datum["과제번호"], trial_name=datum["과제명"], department=department,
                                     research_institution=research_institution, research_type=research_type,
                                     research_step=research_step,
                                     research_scope=research_scope, study_period=datum["연구기간"],
-                                    test_subject=datum["전체목표연구대상자수"])
-        else:
-            break
+                                    total_target_number=datum["전체목표연구대상자수"])
+        # else:
+        #     break
 
     return True
 
@@ -74,9 +74,10 @@ scheduler.add_job(api_job, 'cron', hour=0, id='api_get')
 
 
 class ResearchView(GenericAPIView):
+    read_data()
     startdate = date.today() - timedelta(days=7)
     startdate_time = datetime.combine(startdate, datetime.min.time())
-    queryset = Research.objects.filter(updated_at__gt=startdate_time)
+    queryset = Trial.objects.filter(updated_at__gt=startdate_time)
     serializer = ResearchSerializer(queryset, many=True)
     serializer_class = ResearchSerializer
 
@@ -89,7 +90,7 @@ class ResearchView(GenericAPIView):
 
 class ResearchDetailView(GenericAPIView):
     def get(self, request, trial_id):
-        queryset = Research.objects.filter(subject_number=trial_id).first()
+        queryset = Trial.objects.filter(subject_number=trial_id).first()
         serializer = ResearchSerializer(queryset)
         return Response(serializer.data)
 

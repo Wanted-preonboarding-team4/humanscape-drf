@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import Research
+from .models import Trial
 
 class ResearchSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Research
-        fields = ('id', 'subject_number', 'subject_name', 'test_subject', 'study_period', 'department', 'research_institution',
+        model = Trial
+        fields = ('id', 'trial_id', 'trial_name', 'total_target_number', 'study_period', 'department', 'research_institution',
                   'research_type', 'research_step', 'research_scope')
