@@ -95,3 +95,27 @@ class TrialDetailTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(response.json(), EXPECTED_RESPONSE)
 
+mock_response = {
+    "page"        : 0,
+    "perPage"     : 0,
+    "totalCount"  : 0,
+    "currentCount": 0,
+    "data"        : [
+        {
+            "과제번호"        : "string",
+            "과제명"         : "string",
+            "진료과"         : "string",
+            "연구책임기관"      : "string",
+            "전체목표연구대상자수"  : "string",
+            "연구기간"        : "string",
+            "연구종류"        : "string",
+            "임상시험단계(연구모형)": "string",
+            "연구범위"        : "string"
+        }
+    ]
+}
+@patch("research.views.read_data", return_value=mock_response)
+class ReadDataTestCase(APITestCase):
+    def test_read_data(self, mock_get):
+        response = mock_get.return_value
+        self.assertEqual(response, mock_response)
