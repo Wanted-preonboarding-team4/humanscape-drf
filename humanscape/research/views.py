@@ -1,23 +1,8 @@
 from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets
 from urllib.request import urlopen
 from .serializers import ResearchSerializer
-from .models import (
-    Research,
-    Department,
-    ResearchInstitution,
-    ResearchType,
-    ResearchStep,
-    ResearchScope
-)
 from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import (
-    DjangoJobStore,
-    register_events,
-    register_job
-)
 from .models import (
   Research,
   Department,
