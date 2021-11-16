@@ -129,6 +129,7 @@ curl localhost:3000/list
   - Scheduler를 사용하여 매일 0시에 공공데이터 포털로 부터 Api를 호출하는 로직 구현
 
 #### 그 외
+- **OpenApi log 저장 구현**
 - secret key, api key, algorithm, database등 보안이 필요하다 생각하는 키들은 my_settings.py 파일을 만들어 따로 관리하였습니다.
 - my_settings.py 파일은 git에 업로드하지 않았습니다.
 - 다만, 로컬에서 실행하시려는 경우 아래와같은 양식으로 ../humanscape 위치에 my_settings.py를 만들어서 실행하시면 됩니다. (manage.py와 같은 위치)
