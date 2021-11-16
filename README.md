@@ -27,8 +27,9 @@
 
 ## 3. 기업 과제
 ### 배포 주소
-- http://34.64.141.113:8080/list/
-- http://34.64.141.113:8080/trials/C110012
+- http://34.64.141.113:8080/
+- API 테스트 Postman 문서
+  https://documenter.getpostman.com/view/14305157/UVCB9PXF
 
 ### [필수 포함 사항]
 - READ.ME 작성
