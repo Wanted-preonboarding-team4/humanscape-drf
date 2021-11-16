@@ -19,11 +19,11 @@ from django_apscheduler.jobstores import (
     register_job
 )
 from .models import (
-  Research, 
-  Department, 
-  ResearchInstitution, 
-  ResearchType, 
-  ResearchStep, 
+  Research,
+  Department,
+  ResearchInstitution,
+  ResearchType,
+  ResearchStep,
   ResearchScope
 )
 import time
@@ -99,4 +99,11 @@ class ResearchView(GenericAPIView):
         page = self.paginate_queryset(queryset)
         serializer = self.get_serializer(page, many=True)
         return self.get_paginated_response(serializer.data)
+
+
+class ResearchDetailView(GenericAPIView):
+    def get(self, request, trial_id):
+        queryset = Research.objects.filter(subject_number=trial_id).first()
+        serializer = ResearchSerializer(queryset)
+        return Response(serializer.data)
 
