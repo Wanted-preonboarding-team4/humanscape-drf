@@ -1,4 +1,6 @@
 from django.db import models
+from django.utils.timezone import now
+from datetime import timedelta
 
 class Research(models.Model):
     subject_number       = models.CharField(max_length=10)
@@ -8,8 +10,10 @@ class Research(models.Model):
     department           = models.ForeignKey('Department', on_delete=models.CASCADE)
     research_institution = models.ForeignKey('ResearchInstitution', on_delete=models.CASCADE)
     research_type        = models.ForeignKey('ResearchType', on_delete=models.CASCADE)
-    research_step       = models.ForeignKey('ResearchStep', on_delete=models.CASCADE)
+    research_step        = models.ForeignKey('ResearchStep', on_delete=models.CASCADE)
     research_scope       = models.ForeignKey('ResearchScope', on_delete=models.CASCADE)
+    created_at           = models.DateTimeField(auto_now_add=True)
+    updated_at           = models.DateTimeField(default=now)
 
     class Meta:
         db_table = 'research'

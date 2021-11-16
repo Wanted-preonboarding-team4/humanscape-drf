@@ -1,3 +1,4 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -29,7 +30,7 @@ import time
 import urllib
 import json
 import ssl
-
+from datetime import datetime, timedelta, date
 
 def api_response():
     context     = ssl._create_unverified_context()
@@ -86,12 +87,16 @@ scheduler.start()
 scheduler.add_job(api_job, 'cron', hour=0, id='api_get')
 
 
-class ResearchView(APIView):
-    def get(self, request):
-        data = read_data()
-        for i in data[::-1]:
-            print(i)
-        return Response(status=200)
-        research_data_list = Research.objects.all()
-        serializer = ResearchSerializer(research_data_list, many=True)
-        return Response(serializer.data, status=200)
+class ResearchView(GenericAPIView):
+    startdate = date.today() - timedelta(days=7)
+    startdate_time = datetime.combine(startdate, datetime.min.time())
+    queryset = Research.objects.filter(updated_at__gt=startdate_time)
+    serializer = ResearchSerializer(queryset, many=True)
+    serializer_class = ResearchSerializer
+
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
+
