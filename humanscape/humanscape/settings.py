@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'research',
     'corsheaders',
+    'django_apscheduler',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,14 @@ CORS_ALLOW_HEADERS = (
 )
 
 REST_FRAMEWORK = {'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 10}
+SCHEDULER_CONFIG = {
+    "apscheduler.jobstores.default": {
+        "class": "django_apscheduler.jobstores:DjangoJobStore"
+    },
+    'apscheduler.executors.processpool': {
+        "type": "threadpool"
+    },
+}
+SCHEDULER_AUTOSTART = True
+# APSCHEDULER_DATETIME_FORMAT =  "N j, Y, f:s a"  # Default
+
