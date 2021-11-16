@@ -1,25 +1,10 @@
 from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import viewsets
 from urllib.request import urlopen
 from .serializers import ResearchSerializer
-from .models import (
-    Research,
-    Department,
-    ResearchInstitution,
-    ResearchType,
-    ResearchStep,
-    ResearchScope
-)
 from apscheduler.schedulers.background import BackgroundScheduler
-from django_apscheduler.jobstores import (
-    DjangoJobStore,
-    register_events,
-    register_job
-)
 from .models import (
-  Research,
+  Trial,
   Department,
   ResearchInstitution,
   ResearchType,
@@ -31,11 +16,12 @@ import urllib
 import json
 import ssl
 from datetime import datetime, timedelta, date
+import my_settings
 
 def api_response():
     context     = ssl._create_unverified_context()
     url         = "https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?serviceKey="
-    encode      = "SFxCsx3sxrgFTEUnr4Nz5hKzR9TIF%2FVnA3ekvLJYmIA2CtW%2FoQzet7%2FWebSVNzhlP09pKB8X5Z69MUG55c1gNw%3D%3D"
+    encode      = my_settings.API_KEY
     res         = urllib.request.urlopen(url + encode, context=context)
     json_str    = res.read().decode("utf-8")
     json_object = json.loads(json_str)
@@ -46,7 +32,7 @@ def read_data():
     data = api_response()
 
     for datum in data[::-1]:
-        research = Research.objects.filter(subject_number=datum["과제번호"])
+        research = Trial.objects.filter(trial_id=datum["과제번호"])
         if not research:
             if not datum["전체목표연구대상자수"]:
                 datum["전체목표연구대상자수"] = 0
@@ -66,11 +52,11 @@ def read_data():
             if not research_scope:
                 research_scope = ResearchScope.objects.create(name=datum["연구범위"])
 
-            Research.objects.create(subject_number=datum["과제번호"], subject_name=datum["과제명"], department=department,
+            Trial.objects.create(trial_id=datum["과제번호"], trial_name=datum["과제명"], department=department,
                                     research_institution=research_institution, research_type=research_type,
                                     research_step=research_step,
                                     research_scope=research_scope, study_period=datum["연구기간"],
-                                    test_subject=datum["전체목표연구대상자수"])
+                                    total_target_number=datum["전체목표연구대상자수"])
         else:
             break
 
@@ -87,10 +73,10 @@ scheduler.start()
 scheduler.add_job(api_job, 'cron', hour=0, id='api_get')
 
 
-class ResearchView(GenericAPIView):
+class TrialListView(GenericAPIView):
     startdate = date.today() - timedelta(days=7)
     startdate_time = datetime.combine(startdate, datetime.min.time())
-    queryset = Research.objects.filter(updated_at__gt=startdate_time)
+    queryset = Trial.objects.filter(updated_at__gt=startdate_time)
     serializer = ResearchSerializer(queryset, many=True)
     serializer_class = ResearchSerializer
 
@@ -101,9 +87,9 @@ class ResearchView(GenericAPIView):
         return self.get_paginated_response(serializer.data)
 
 
-class ResearchDetailView(GenericAPIView):
+class TrialDetailView(GenericAPIView):
     def get(self, request, trial_id):
-        queryset = Research.objects.filter(subject_number=trial_id).first()
+        queryset = Trial.objects.filter(trial_id=trial_id).first()
         serializer = ResearchSerializer(queryset)
         return Response(serializer.data)
 
