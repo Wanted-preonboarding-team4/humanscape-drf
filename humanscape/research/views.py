@@ -9,7 +9,7 @@ from urllib.request import urlopen
 import urllib
 import json
 import ssl
-
+from datetime import datetime, timedelta, date
 
 def api_response():
     context = ssl._create_unverified_context()
@@ -52,9 +52,12 @@ def read_data():
 
 
 class ResearchView(GenericAPIView):
-    queryset = Research.objects.all()
+    startdate = date.today() - timedelta(days=7)
+    startdate_time = datetime.combine(startdate, datetime.min.time())
+    queryset = Research.objects.filter(updated_at__gt=startdate_time)
     serializer = ResearchSerializer(queryset, many=True)
     serializer_class = ResearchSerializer
+
     def get(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         page = self.paginate_queryset(queryset)
