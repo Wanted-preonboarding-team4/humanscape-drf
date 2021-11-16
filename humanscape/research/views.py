@@ -1,3 +1,4 @@
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import viewsets
@@ -50,8 +51,12 @@ def read_data():
     return
 
 
-class ResearchView(APIView):
-    def get(self, request):
-        research_data_list = Research.objects.all()
-        serializer = ResearchSerializer(research_data_list, many=True)
-        return Response(serializer.data, status=200)
+class ResearchView(GenericAPIView):
+    queryset = Research.objects.all()
+    serializer = ResearchSerializer(queryset, many=True)
+    serializer_class = ResearchSerializer
+    def get(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        serializer = self.get_serializer(page, many=True)
+        return self.get_paginated_response(serializer.data)
