@@ -16,11 +16,12 @@ import urllib
 import json
 import ssl
 from datetime import datetime, timedelta, date
+import my_settings
 
 def api_response():
     context     = ssl._create_unverified_context()
     url         = "https://api.odcloud.kr/api/3074271/v1/uddi:cfc19dda-6f75-4c57-86a8-bb9c8b103887?serviceKey="
-    encode      = "SFxCsx3sxrgFTEUnr4Nz5hKzR9TIF%2FVnA3ekvLJYmIA2CtW%2FoQzet7%2FWebSVNzhlP09pKB8X5Z69MUG55c1gNw%3D%3D"
+    encode      = my_settings.API_KEY
     res         = urllib.request.urlopen(url + encode, context=context)
     json_str    = res.read().decode("utf-8")
     json_object = json.loads(json_str)
