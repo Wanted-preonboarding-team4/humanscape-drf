@@ -1,7 +1,9 @@
+from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from urllib.request import urlopen
 from .serializers import ResearchSerializer
+from .exceptions import NotFoundException
 from apscheduler.schedulers.background import BackgroundScheduler
 from .models import (
   Trial,
@@ -90,6 +92,8 @@ class TrialListView(GenericAPIView):
 class TrialDetailView(GenericAPIView):
     def get(self, request, trial_id):
         queryset = Trial.objects.filter(trial_id=trial_id).first()
+        if not queryset:
+            raise NotFoundException(trial_id)
         serializer = ResearchSerializer(queryset)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
