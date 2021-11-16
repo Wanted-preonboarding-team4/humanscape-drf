@@ -196,7 +196,8 @@ API_KEY = "your_api_key"
 ## 8. 추가 구현
 
 #### Open Api response log 저장
-- OpenApi가 response 될 때 마다 log를 저장하도록 구현
+- OpenApi가 response 될 때 마다 log를 저장하도록 구현하였습니다.
+- 굳이 요구하지 않은 것을 구현한 이유는, open-api에 request를 보낼 때 항상 ok 응답을 받는 것이 아니라, 401, 500응답을 받을 수 있기 때문에 기록이 필요하다고 생각하였습니다. 그런데 이것을 db에 저장하는 것은 적절하지 않으므로 txt파일에 기록하도록 하였습니다.
 ```python
     f = open("logs/batch_task_log.txt", "a")
     data = f"status_code = {res.status}, datetime = {datetime.now()}\n"
@@ -207,4 +208,4 @@ API_KEY = "your_api_key"
 
 
 ## 9. Reference
-이 프로젝트는 원티드x위코드 백엔드 프리온보딩 과제 일환으로 8퍼센트(eightpercent)에서 출제한 과제를 기반으로 만들었습니다. 감사합니다.
+이 프로젝트는 원티드x위코드 백엔드 프리온보딩 과제 일환으로 휴먼스케이프(Humanscape)에서 출제한 과제를 기반으로 만들었습니다. 감사합니다.
