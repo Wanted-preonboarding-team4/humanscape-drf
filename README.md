@@ -131,6 +131,26 @@ curl localhost:3000/list
 #### 그 외
 - secret key, api key, algorithm, database등 보안이 필요하다 생각하는 키들은 my_settings.py 파일을 만들어 따로 관리하였습니다.
 - my_settings.py 파일은 git에 업로드하지 않았습니다.
+- 다만, 로컬에서 실행하시려는 경우 아래와같은 양식으로 ../humanscape 위치에 my_settings.py를 만들어서 실행하시면 됩니다. (manage.py와 같은 위치)
+
+```
+from pathlib import Path
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+SECRET_KEY = 'your_secret_key'
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+API_KEY = "your_api_key"
+
+```
+
 
 ## 6. Api 호출
 - 수집한 임상정보 전체에 대한 리스트 API(paginagtion)
