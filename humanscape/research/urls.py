@@ -12,6 +12,6 @@ from research.views import ResearchView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    path('research/', research.views.ResearchView.as_view(),),
-    path('research/<str:trial_id>', research.views.ResearchDetailView.as_view())
+    path('list/', research.views.ResearchView.as_view(),),
+    path('trials/<str:trial_id>', research.views.ResearchDetailView.as_view())
 ]
