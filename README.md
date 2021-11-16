@@ -26,6 +26,8 @@
 <br>
 
 ## 3. 기업 과제
+### 배포 주소
+
 ### [필수 포함 사항]
 - READ.ME 작성
     - 프로젝트 빌드, 자세한 실행 방법 명시
@@ -91,27 +93,53 @@ curl localhost:3000/list
    }
 ```
 
-## 모델링
-![스크린샷 2021-11-16 오후 8 57 03](https://user-images.githubusercontent.com/67960152/141981318-c387712e-b505-485d-b2b2-e7434b4af92f.png)
+## 4. 모델링
+![스크린샷 2021-11-16 오후 10 31 56](https://user-images.githubusercontent.com/67960152/141994641-27718887-9493-43b1-a1fa-9ffa8f47ed5f.png)
 <br>
 
-## 과제 구현 사항
+## 5. 과제 구현 사항
 
 #### 정성헌
 
-- 구현 사항
-- 구현 사항
+- 페어 프로그래밍(정성헌, 안다민)
+  - 수집한 임상정보 전체에 대한 리스트 API 
+  - 수집한 임상정보 하나에 대한 디테일 뷰 API
+  - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API
+  - 수집한 임상정보 전체에 대한 리스트 API 와 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API 에 대한 Pagination 기능
+- Docker를 사용하여 배포용 Docker서버 구현
 
 #### 안다민
 
-- 구현 사항
-- 구현 사항
+- 페어 프로그래밍(정성헌, 안다민)
+  - 수집한 임상정보 전체에 대한 리스트 API 
+  - 수집한 임상정보 하나에 대한 디테일 뷰 API
+  - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API
+  - 수집한 임상정보 전체에 대한 리스트 API 와 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API 에 대한 Pagination 기능
+- 구현 사항 적어주세요
 
 #### 송빈호
 
-- OpenApi
+- 임상정보를 수집하는 batch task
   - 공공데이터 포털 사이트에서 과제의 OpenApi response 구현
   - 공공데이터 포털로 부터 받은 데이터를 확인하여 DB에 저장 로직 구현
   - 받은 데이터를 끝에서부터 과제 번호를 확인하여 과제번호가 없으면 과제 추가
   - Scheduler를 사용하여 매일 0시에 공공데이터 포털로 부터 Api를 호출하는 로직 구현
-  
+
+#### 그 외
+- secret key, api key, algorithm, database등 보안이 필요하다 생각하는 키들은 my_settings.py 파일을 만들어 따로 관리하였습니다.
+- my_settings.py 파일은 git에 업로드하지 않았습니다.
+
+## 6. Api 호출
+- 수집한 임상정보 전체에 대한 리스트 API(paginagtion)
+<img width="943" alt="스크린샷 2021-11-16 오후 9 53 01" src="https://user-images.githubusercontent.com/67960152/141988867-eddc1a1b-43d3-4a44-8263-af9c3b991540.png">
+
+- 수집한 임상정보 하나에 대한 디테일 뷰 API
+<img width="943" alt="스크린샷 2021-11-16 오후 9 54 03" src="https://user-images.githubusercontent.com/67960152/141989091-6ae7d076-5075-44ce-8db9-bb60ce3a7464.png">
+
+- scheduler 실행될 때 마다 시간 출력
+<img width="400" alt="스크린샷 2021-11-16 오후 9 57 22" src="https://user-images.githubusercontent.com/67960152/141989391-7dfc6b54-f5e8-4bfa-b422-28f5b473fb46.png">
+
+## 7. Testcase
+
+## 8. Reference
+이 프로젝트는 원티드x위코드 백엔드 프리온보딩 과제 일환으로 8퍼센트(eightpercent)에서 출제한 과제를 기반으로 만들었습니다. 감사합니다.
