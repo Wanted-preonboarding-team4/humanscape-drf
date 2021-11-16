@@ -57,8 +57,8 @@ def read_data():
                                     research_step=research_step,
                                     research_scope=research_scope, study_period=datum["연구기간"],
                                     total_target_number=datum["전체목표연구대상자수"])
-        # else:
-        #     break
+        else:
+            break
 
     return True
 
@@ -73,8 +73,7 @@ scheduler.start()
 scheduler.add_job(api_job, 'cron', hour=0, id='api_get')
 
 
-class ResearchView(GenericAPIView):
-    read_data()
+class TrialListView(GenericAPIView):
     startdate = date.today() - timedelta(days=7)
     startdate_time = datetime.combine(startdate, datetime.min.time())
     queryset = Trial.objects.filter(updated_at__gt=startdate_time)
@@ -88,9 +87,9 @@ class ResearchView(GenericAPIView):
         return self.get_paginated_response(serializer.data)
 
 
-class ResearchDetailView(GenericAPIView):
+class TrialDetailView(GenericAPIView):
     def get(self, request, trial_id):
-        queryset = Trial.objects.filter(subject_number=trial_id).first()
+        queryset = Trial.objects.filter(trial_id=trial_id).first()
         serializer = ResearchSerializer(queryset)
         return Response(serializer.data)
 
