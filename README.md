@@ -106,6 +106,7 @@ curl localhost:3000/list
   - 수집한 임상정보 하나에 대한 디테일 뷰 API
   - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API
   - 수집한 임상정보 전체에 대한 리스트 API 와 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API 에 대한 Pagination 기능
+  - 테스트 코드 구현(list, trial, mock server 이용한 테스트 코드 작성)
 - Docker를 사용하여 배포용 Docker서버 구현
 
 #### 안다민
@@ -115,7 +116,7 @@ curl localhost:3000/list
   - 수집한 임상정보 하나에 대한 디테일 뷰 API
   - 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API
   - 수집한 임상정보 전체에 대한 리스트 API 와 최근 일주일내에 업데이트(변경사항이 있는) 된 임상정보 리스트 API 에 대한 Pagination 기능
-  - 페어프로그래밍 통한 테스트 코드 구현(list, trial, mock server 이용한 테스트 코드 작성)
+  - 테스트 코드 구현(list, trial, mock server 이용한 테스트 코드 작성)
 
 #### 송빈호
 
@@ -139,7 +140,48 @@ curl localhost:3000/list
 - scheduler 실행될 때 마다 시간 출력
 <img width="400" alt="스크린샷 2021-11-16 오후 9 57 22" src="https://user-images.githubusercontent.com/67960152/141989391-7dfc6b54-f5e8-4bfa-b422-28f5b473fb46.png">
 
-## 7. Testcase
 
-## 8. Reference
+## 7. Testcase(3가지 case)
+
+#### Test : Trial list test 구현
+- 성공한 경우 200 반환하는지
+
+![스크린샷 2021-11-16 오후 10 15 53](https://user-images.githubusercontent.com/67960152/142012866-09b28a5e-7ee2-427a-88a8-6832c1a1084e.png)
+
+- 페이지네이션 작동 하는지
+
+![스크린샷 2021-11-16 오후 10 23 47](https://user-images.githubusercontent.com/67960152/142012920-1bec88a6-2625-4316-a5c0-8e0e02632615.png)
+
+- 일주일 내 업데이트 내용인지
+
+![스크린샷 2021-11-16 오후 10 51 00](https://user-images.githubusercontent.com/67960152/142012932-93ed52ad-acc0-47cf-a2db-92f35573fff2.png)
+
+
+#### Test : Trial detail test 구현
+- 성공한 경우 200 반환하는지
+- 못 찾을 경우 404 반환하는지
+
+![스크린샷 2021-11-16 오후 11 01 19](https://user-images.githubusercontent.com/67960152/142013060-153c8e62-9f69-43af-806b-dad2192456c7.png)
+
+
+#### Test : 외부 api mock server test 구현
+- mock server 리턴 하는지
+
+![스크린샷 2021-11-17 오전 12 22 02](https://user-images.githubusercontent.com/67960152/142014368-b8dcff87-0d97-4cc7-8615-911fec6424ae.png)
+
+
+## 8. 추가 구현
+
+#### Open Api response log 저장
+- OpenApi가 response 될 때 마다 log를 저장하도록 구현
+```python
+    f = open("logs/batch_task_log.txt", "a")
+    data = f"status_code = {res.status}, datetime = {datetime.now()}\n"
+    f.write(data)
+    f.close()
+```
+<img width="457" alt="스크린샷 2021-11-17 오전 12 10 38" src="https://user-images.githubusercontent.com/67960152/142011281-e05939aa-88c6-4628-8368-8cddfcfec18a.png">
+
+
+## 9. Reference
 이 프로젝트는 원티드x위코드 백엔드 프리온보딩 과제 일환으로 8퍼센트(eightpercent)에서 출제한 과제를 기반으로 만들었습니다. 감사합니다.
