@@ -16,7 +16,11 @@
 ![스크린샷 2021-11-16 오후 7 59 14](https://user-images.githubusercontent.com/67960152/141973560-041682da-204b-43a8-89b5-677ac383c753.png)
 
 ### 🖥 Backend 3명 🖥
-- 정성헌, 안다민, 송빈호
+| **이름** | **Github Link** |
+|:------|:-------------|
+| 정성헌 | https://github.com/Heon4856 |
+| 안다민 | https://github.com/damin0320 |
+| 송빈호 | https://github.com/binogood |
 <br>
 
 ### 📚 Stack 📚
